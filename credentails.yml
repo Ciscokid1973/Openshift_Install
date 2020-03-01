@@ -1,0 +1,12 @@
+---
+    - hosts: all
+    
+      vars:
+        aws:
+          access_key: '{{ lookup("env", "AWS_ACCESS_KEY_ID") }}'
+          secret_key: '{{ lookup("env", "AWS_SECRET_ACCESS_KEY") }}'
+          security_token: '{{ lookup("env", "AWS_SECURITY_TOKEN") }}'
+    
+      tasks:
+         - debug:
+            var: aws

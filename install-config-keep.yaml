@@ -1,0 +1,51 @@
+apiVersion: v1
+baseDomain: circumflexdevops.co.uk
+controlPlane: 
+  hyperthreading: Enabled   
+  name: master
+  platform:
+    aws:
+      zones: 
+      - eu-west-2a
+      - eu-west-2b
+      - eu-west-2c
+      rootVolume:
+        iops: 4000
+        size: 100
+        type: io1
+      type: m5.xlarge
+  replicas: 3
+compute: 
+- hyperthreading: Enabled 
+  name: worker
+  platform:
+    aws:
+      rootVolume:
+        iops: 2000
+        size: 50
+        type: io1
+      type: m5.large
+      zones: 
+      - eu-west-2a
+      - eu-west-2b
+  replicas: 2
+metadata:
+  name: openshift-demo
+networking: 
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineCIDR: 10.0.0.0/16
+  networkType: OpenShiftSDN
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  aws:
+    region: eu-west-2 
+    userTags:
+      adminContact: sion
+      costCenter: 1234
+publish: External
+pullSecret: '{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K3Npb25hcnRpbmdzdGFsbDFzeXdhdDJ0MXpvY3l4bzl4NXZ2eHFmbm42ejoxMUtZM0dIRlk2NUY0WVpOR1cwVENVR0VHWFpCR1pPVVlCTUw1UTBaVDNKNUc5N01MME9YWTBUNlVUUzZOSFZG","email":"sion.artingstall@ibm.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K3Npb25hcnRpbmdzdGFsbDFzeXdhdDJ0MXpvY3l4bzl4NXZ2eHFmbm42ejoxMUtZM0dIRlk2NUY0WVpOR1cwVENVR0VHWFpCR1pPVVlCTUw1UTBaVDNKNUc5N01MME9YWTBUNlVUUzZOSFZG","email":"sion.artingstall@ibm.com"},"registry.connect.redhat.com":{"auth":"NTI4NDAwMDN8dWhjLTFTWVdhVDJ0MXpPQ3lYbzl4NVZWWHFmbk42ejpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSm1NalkwT1dZMU5tTmxZMkUwTlRJMU9HSmpNREkyWm1VNVlUTmhObVZqWWlKOS5BUWtDNGNqcXdweUVkNHlHZ04zdnlRTzhnam53bk5NVUQwQjJ2WmJsV0FWYzh5UVBmeTlvaWRfdnAtWTFTVTVUbi1PdVFFWnlIUnNlcnRjN184ZklnWU1xZ1pZeW1yRjJ6QUVNc2Z5Z2xLeThKWWxaX2duTlZrakt5MnR0Y1BqSEFraEpBYWFNazVKZFZrVGZPOFl0SDN3d1NTZXdHS3RpZFkwYlRxcnotOUZ0WE9jcktaMXJ1MHc3V1BvZUh2QVRYWk92OXVRRURDMG1lX2szcFJFV2V2T08wMU50dEJfeTdEVDNEdlIyZEVXT2twQ3ZMWjhKZm9fTXQyNFJrblVwekJwVzJDWVRMZUpjMkt6RGJUMFN0V2Z3VGdhT2JHTU5odkVET3hOODAzc1VjN25nS2hQaktyelYwMy1menJTSTl0aWNnd0NqT2RmQ2xrcy1JOHA2bzViejUwWTR6TURILTl3b2xRWUQ3OTJJLVU4bUFwM3YzT0VOcTd5Y3BCekljUTNUUlM4cU4zWXhsN2JEUVVDNnhPVlZiZm1XRFJXR2NtdzRabkhPYmt5WDBHR01uMlF2SUxHOFQ0azcweTNGaHY5U3I3X3lBWGp0MC1oMUc3dHY3a2plX2t4YVEyWk92TFI2Y05WUTIxanM5X3VSX2hLeEhvU3NPSUU0U2pUdmxtZlRTMU9udUVVdk1tM2Zwck4zUm10UDJoV3NkN3RlaHlIOTh5OTUtaWhuZmZuZ1RKa1NWZnF2aG4wMnd2QjQ2UVY5YXR2alFMQUU3VW9NeUZKdXZCUHhSRWFyZVdvRGUwWE9QeXNNQzlPajEzSDljNVR4LWI0SG5NbTNucEpuRk9pUENuS0Jjd093RndwS1VUNVFtNU5DTW8yYUxxdkxoN0ZLSDNJNlhIbw==","email":"sion.artingstall@ibm.com"},"registry.redhat.io":{"auth":"NTI4NDAwMDN8dWhjLTFTWVdhVDJ0MXpPQ3lYbzl4NVZWWHFmbk42ejpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSm1NalkwT1dZMU5tTmxZMkUwTlRJMU9HSmpNREkyWm1VNVlUTmhObVZqWWlKOS5BUWtDNGNqcXdweUVkNHlHZ04zdnlRTzhnam53bk5NVUQwQjJ2WmJsV0FWYzh5UVBmeTlvaWRfdnAtWTFTVTVUbi1PdVFFWnlIUnNlcnRjN184ZklnWU1xZ1pZeW1yRjJ6QUVNc2Z5Z2xLeThKWWxaX2duTlZrakt5MnR0Y1BqSEFraEpBYWFNazVKZFZrVGZPOFl0SDN3d1NTZXdHS3RpZFkwYlRxcnotOUZ0WE9jcktaMXJ1MHc3V1BvZUh2QVRYWk92OXVRRURDMG1lX2szcFJFV2V2T08wMU50dEJfeTdEVDNEdlIyZEVXT2twQ3ZMWjhKZm9fTXQyNFJrblVwekJwVzJDWVRMZUpjMkt6RGJUMFN0V2Z3VGdhT2JHTU5odkVET3hOODAzc1VjN25nS2hQaktyelYwMy1menJTSTl0aWNnd0NqT2RmQ2xrcy1JOHA2bzViejUwWTR6TURILTl3b2xRWUQ3OTJJLVU4bUFwM3YzT0VOcTd5Y3BCekljUTNUUlM4cU4zWXhsN2JEUVVDNnhPVlZiZm1XRFJXR2NtdzRabkhPYmt5WDBHR01uMlF2SUxHOFQ0azcweTNGaHY5U3I3X3lBWGp0MC1oMUc3dHY3a2plX2t4YVEyWk92TFI2Y05WUTIxanM5X3VSX2hLeEhvU3NPSUU0U2pUdmxtZlRTMU9udUVVdk1tM2Zwck4zUm10UDJoV3NkN3RlaHlIOTh5OTUtaWhuZmZuZ1RKa1NWZnF2aG4wMnd2QjQ2UVY5YXR2alFMQUU3VW9NeUZKdXZCUHhSRWFyZVdvRGUwWE9QeXNNQzlPajEzSDljNVR4LWI0SG5NbTNucEpuRk9pUENuS0Jjd093RndwS1VUNVFtNU5DTW8yYUxxdkxoN0ZLSDNJNlhIbw==","email":"sion.artingstall@ibm.com"}}}'
+sshKey: |
+  ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDeP2jXjslpeq7N/a9zuQ73BRyg5lK3xNCEMvdk+dnpMcoocqKmvWKDUkPsB+w2H2zI3vZi25q8yET/F6KJL5H7j9beh8FGtESPBzdMwTRga069lt4RNvaD4jqFnX6mzPuQ5yaWfhvFMKjQP7zSI7NGk4SZwa7y1Gz+0Yxu9KRAEppMflMC1fvn5DvZYDbOxSMsPi38nUkPap4jexSObW2hgLNYlZICzYvcS4az+ULcMD+rgOX3u+ZrnI37DpkCK89Ftcp6dMXrli3Bs7qAl/uJL4ibi1mn9zc1q3fs6O373AkIQ3TqRIi2TTrN8JHSRwwQf3nnGZPGvpxhmHf1Z3QaCGv3i7WFvq9iu0ea5Ln49D7/SI23qSJSxlmf1OgeYalmlw4xPN51HJy+P5R9q8oARuvQ3X2HH+V9Q024ocdBZB6XKzDj2MGHBsYpyRKHmyOesDWKiczuvtZfifmekf+BrFvPTLC4cpAMqFR0P0opeQg8vYdvzXP/HDHeA+5FGhbL9KmFiCj1+YG6qNo37Fq1hceOiQ4Y1OL07avMRB43eXSPKi9x5FiDqcHrD6tcS2mEt/xDIKw8xwepMnsAsR53X+GfoALdNuopVbirr8xhoJWWRI8dPnySttTQUExlf5NBMd4OCwhQ2pWAESnzrgU74ceHb9yg5RPIxFpLsSD6ow== sion@Sions-MacBook-Pro.local

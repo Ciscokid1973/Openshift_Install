@@ -1,0 +1,63 @@
+---
+  - name: OpenShift Cluster creation
+    # This is a sepearte vm cloud platform.  Fill in the actual IP address
+    hosts: x.x.x.x
+ 
+    # We have created ansible-tower credentials in AWS and added this to Ansible-tower. 
+
+    pre_tasks:
+
+    - name: install the latest version of git
+      yum:
+        name: git
+        state: latest
+        
+    - name: install pip
+      yum:
+        name: python3-pip
+        state: latest
+
+    - name: install aws-cli
+      command: pip3 install awscli
+
+    - name: Create openshift installer working directory
+      file:
+        path: ~/openshift_installer
+        state: directory
+
+    - name: Download and extract ga installer for {{ ocp_vers }}
+      unarchive:
+        src: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ ocp_vers }}/openshift-install-linux-{{ocp_vers}}.tar.gz
+        dest: ~/openshift_installer
+        remote_src: yes
+      run_once: true
+
+    tasks:
+
+    - name: Clone a private repository into /OS_AWS.
+      git:
+        repo: git@github.ibm.com:X
+        version: ansible-tower
+        dest: /OS_AWS
+        accept_hostkey: yes
+
+    - name: copy install-config.yaml to working directory
+      copy:
+        src: OS_AWS/ansible-playbook/install-config.yaml
+        dest: ~/openshift_installer/install-config.yaml
+        remote_src: yes
+
+    - name: copy aws creditals to .aws directory
+      copy:
+        src: /OS_AWS/ansible-playbook/credentials
+        dest: ~/.aws/credentials
+        remote_src: yes
+
+    - name: copy aws config to .aws directory
+      copy:
+        src: /OS_AWS/ansible-playbook/config
+        dest: ~/.aws/config
+        remote_src: yes
+
+    - name: Run installer 
+      command: ~/openshift_installer/openshift-install --dir ~/openshift_installer create cluster
